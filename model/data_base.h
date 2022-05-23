@@ -34,6 +34,14 @@ public:
     office* get_office_at(uint32_t index) {
         return offices.get_value_at(index);
     }
+
+    void load_from_file(QString path) {
+
+    }
+
+    void unload_to_file(QString path) {
+
+    }
 };
 
 #endif // DATA_BASE_H
