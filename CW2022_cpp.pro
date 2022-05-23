@@ -10,10 +10,26 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    model/data_base.cpp \
+    model/director.cpp \
+    model/iemployee.cpp \
+    model/office.cpp \
+    model/security.cpp \
+    model/teacher.cpp \
+    office.cpp \
+    slow_list.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    model/data_base.h \
+    model/director.h \
+    model/iemployee.h \
+    model/office.h \
+    model/security.h \
+    model/teacher.h \
+    office.h \
+    slow_list.h
 
 FORMS += \
     mainwindow.ui
