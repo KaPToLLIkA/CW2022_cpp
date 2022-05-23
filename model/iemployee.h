@@ -14,6 +14,8 @@ protected:
     QDate birth_day;
     int salary;
 public:
+    explicit iemployee() {}
+
     explicit iemployee(QString name,
                        QString surname,
                        QString patronymic,

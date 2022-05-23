@@ -7,6 +7,8 @@ class security : public iemployee
 {
     QString security_organization;
 public:
+    explicit security() {}
+
     explicit security(QString name,
              QString surname,
              QString patronymic,

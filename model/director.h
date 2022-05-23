@@ -7,6 +7,8 @@ class director : public iemployee
 {
     QString phone;
 public:
+    explicit director() {}
+
     explicit director(QString name,
              QString surname,
              QString patronymic,

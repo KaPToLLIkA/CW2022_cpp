@@ -12,6 +12,8 @@ class office
     QString phone;
     slow_list<iemployee> employees;
 public:
+    explicit office() {}
+
     explicit office(QString name,
                     QString address,
                     QString phone)

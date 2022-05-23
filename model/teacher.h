@@ -8,6 +8,8 @@ class teacher : public iemployee
     QString education;
     QString subject;
 public:
+    explicit teacher() {}
+
     explicit teacher(QString name,
             QString surname,
             QString patronymic,
