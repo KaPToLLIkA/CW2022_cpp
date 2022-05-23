@@ -5,8 +5,30 @@
 
 class security : public iemployee
 {
+    QString security_organization;
 public:
-    security();
+    explicit security(QString name,
+             QString surname,
+             QString patronymic,
+             QDate birth_day,
+             int salary,
+             QString security_organization)
+         :
+           iemployee(name, surname, patronymic, birth_day, salary),
+           security_organization(security_organization)
+     {}
+
+    QString get_sec_organization() { return security_organization; }
+
+    void set_sec_organization(QString value) { security_organization = value; }
+
+    void deserialize_from(QDataStream &stream) override {
+
+    }
+
+    void serialize_to(QDataStream &stream) override {
+
+    }
 };
 
 #endif // SECURITY_H
