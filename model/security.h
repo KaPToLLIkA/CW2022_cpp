@@ -29,6 +29,13 @@ public:
     void serialize_to(QDataStream &stream) override {
 
     }
+
+    friend bool operator==(const security& l, const security& r);
 };
+
+bool operator==(const security& l, const security& r) {
+    return (iemployee)l == (iemployee)r
+            && l.security_organization == r.security_organization;
+}
 
 #endif // SECURITY_H

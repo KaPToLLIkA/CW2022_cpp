@@ -29,6 +29,12 @@ public:
     void serialize_to(QDataStream &stream) override {
 
     }
+
+    friend bool operator==(const director& l, const director& r);
 };
 
+bool operator==(const director& l, const director& r) {
+    return (iemployee)l == (iemployee)r
+            && l.phone == r.phone;
+}
 #endif // DIRECTOR_H

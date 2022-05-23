@@ -34,6 +34,14 @@ public:
     void serialize_to(QDataStream &stream) override {
 
     }
+
+    friend bool operator==(const teacher& l, const teacher& r);
 };
+
+bool operator==(const teacher& l, const teacher& r) {
+    return (iemployee)l == (iemployee)r
+            && l.education == r.education
+            && l.subject == r.subject;
+}
 
 #endif // TEACHER_H

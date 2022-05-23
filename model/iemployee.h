@@ -40,6 +40,8 @@ public:
 
     virtual void serialize_to(QDataStream &stream);
     virtual void deserialize_from(QDataStream &stream);
+
+    friend bool operator==(const iemployee& l, const iemployee& r);
 };
 
 inline void iemployee::serialize_to(QDataStream &stream)
@@ -50,6 +52,14 @@ inline void iemployee::serialize_to(QDataStream &stream)
 inline void iemployee::deserialize_from(QDataStream &stream)
 {
 
+}
+
+bool operator==(const iemployee& l, const iemployee& r) {
+    return l.name == r.name
+            && l.surname == r.surname
+            && l.birth_day == r.birth_day
+            && l.patronymic == r.patronymic
+            && l.salary == r.salary;
 }
 
 #endif // IEMPLOYEE_H
