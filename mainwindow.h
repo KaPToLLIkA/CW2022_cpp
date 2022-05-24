@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QDebug>
 #include <array>
 #include <qvector.h>
 
@@ -32,6 +33,8 @@ class MainWindow : public QMainWindow
     void activate_fields(QString post);
     void update_offices_table();
     void update_empl_table();
+    void disable_all_empl_buttons();
+    void disable_all_office_buttons();
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -45,6 +48,12 @@ private slots:
     void on_emplPostBox_currentIndexChanged(int index);
 
     void on_orgAdd_clicked();
+
+    void on_orgRemove_clicked();
+
+    void on_orgRedo_clicked();
+
+    void on_orgApply_clicked();
 
 private:
     Ui::MainWindow *ui;
