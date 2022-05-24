@@ -7,7 +7,7 @@ class security : public iemployee
 {
     QString security_organization;
 public:
-    explicit security();
+    explicit security() {}
 
     explicit security(QString name,
              QString surname,
@@ -36,10 +36,5 @@ public:
 
     friend bool operator==(const security& l, const security& r);
 };
-
-bool operator==(const security& l, const security& r) {
-    return (iemployee)l == (iemployee)r
-            && l.security_organization == r.security_organization;
-}
 
 #endif // SECURITY_H

@@ -8,7 +8,7 @@ class teacher : public iemployee
     QString education;
     QString subject;
 public:
-    explicit teacher();
+    explicit teacher() {}
 
     explicit teacher(QString name,
             QString surname,
@@ -41,11 +41,5 @@ public:
 
     friend bool operator==(const teacher& l, const teacher& r);
 };
-
-bool operator==(const teacher& l, const teacher& r) {
-    return (iemployee)l == (iemployee)r
-            && l.education == r.education
-            && l.subject == r.subject;
-}
 
 #endif // TEACHER_H

@@ -1,6 +1,46 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+void MainWindow::activate_fields(QString post)
+{
+    if (post == "Учитель") {
+        for (int i = 0; i < allFields.count(); ++i) {
+            allFields[i]->setEnabled(false);
+        }
+        for (int i = 0; i < teacherFields.count(); ++i) {
+            teacherFields[i]->setEnabled(true);
+        }
+    }
+
+    if (post == "Директор") {
+        for (int i = 0; i < allFields.count(); ++i) {
+            allFields[i]->setEnabled(false);
+        }
+        for (int i = 0; i < directorFields.count(); ++i) {
+            directorFields[i]->setEnabled(true);
+        }
+    }
+
+    if (post == "Охранник") {
+        for (int i = 0; i < allFields.count(); ++i) {
+            allFields[i]->setEnabled(false);
+        }
+        for (int i = 0; i < securityFields.count(); ++i) {
+            securityFields[i]->setEnabled(true);
+        }
+    }
+}
+
+void MainWindow::update_offices_table()
+{
+
+}
+
+void MainWindow::update_empl_table()
+{
+
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -12,6 +52,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->emplApply->setEnabled(false);
     ui->emplRemove->setEnabled(false);
     ui->emplRedo->setEnabled(false);
+
+    ui->orgRemove->setEnabled(false);
+    ui->orgRedo->setEnabled(false);
 
     allFields.append(ui->emplName);
     allFields.append(ui->emplSurname);
@@ -44,6 +87,8 @@ MainWindow::MainWindow(QWidget *parent)
     securityFields.append(ui->emplBirthDay);
     securityFields.append(ui->emplSalary);
     securityFields.append(ui->emplOrganization);
+
+    activate_fields(ui->emplPostBox->currentText());
 }
 
 MainWindow::~MainWindow()
@@ -61,36 +106,25 @@ void MainWindow::on_emplTable_cellClicked(int row, int column)
 void MainWindow::on_orgTable_cellClicked(int row, int column)
 {
     orgCell = { column, row };
+    curOffice = data_base::i()->get_office_at(row);
 }
 
 
 void MainWindow::on_emplPostBox_currentIndexChanged(int index)
 {
-    if (ui->emplPostBox->currentText() == "Учитель") {
-        for (int i = 0; i < allFields.count(); ++i) {
-            allFields[i]->setEnabled(false);
-        }
-        for (int i = 0; i < teacherFields.count(); ++i) {
-            teacherFields[i]->setEnabled(true);
-        }
-    }
+    activate_fields(ui->emplPostBox->currentText());
+}
 
-    if (ui->emplPostBox->currentText() == "Директор") {
-        for (int i = 0; i < allFields.count(); ++i) {
-            allFields[i]->setEnabled(false);
-        }
-        for (int i = 0; i < teacherFields.count(); ++i) {
-            teacherFields[i]->setEnabled(true);
-        }
-    }
 
-    if (ui->emplPostBox->currentText() == "Охранник") {
-        for (int i = 0; i < allFields.count(); ++i) {
-            allFields[i]->setEnabled(false);
-        }
-        for (int i = 0; i < teacherFields.count(); ++i) {
-            teacherFields[i]->setEnabled(true);
-        }
-    }
+void MainWindow::on_orgAdd_clicked()
+{
+    QString name = ui->orgName->text();
+    QString address = ui->orgAddress->text();
+    QString phone = ui->orgPhone->text();
+
+    office* o = new office(name, address, phone);
+
+    data_base::i()->add_office(o);
+    curOffice = o;
 }
 

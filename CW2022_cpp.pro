@@ -17,7 +17,6 @@ SOURCES += \
     model/office.cpp \
     model/security.cpp \
     model/teacher.cpp \
-    office.cpp \
     slow_list.cpp
 
 HEADERS += \
@@ -28,7 +27,6 @@ HEADERS += \
     model/office.h \
     model/security.h \
     model/teacher.h \
-    office.h \
     slow_list.h
 
 FORMS += \
