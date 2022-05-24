@@ -117,6 +117,55 @@ bool MainWindow::is_valid_office_input()
     return true;
 }
 
+void MainWindow::update_empl_table_after_search(QString name, QString surname, QString patr, int salary)
+{
+    while(ui->emplTable->rowCount() > 0) {
+        ui->emplTable->removeRow(0);
+    }
+
+    for (int i = 0; i < curOffice->employees_count(); ++i) {
+        iemployee* x = curOffice->get_employee_at(i);
+
+        if (x->get_name().contains(name)
+                && x->get_surname().contains(surname)
+                && x->get_patronymic().contains(patr)
+                && x->get_salary() > salary) {
+
+            ui->emplTable->insertRow(ui->emplTable->rowCount());
+
+            ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 0,
+                                  new QTableWidgetItem(x->get_post()));
+            ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 1,
+                                  new QTableWidgetItem(x->get_name()));
+            ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 2,
+                                  new QTableWidgetItem(x->get_surname()));
+            ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 3,
+                                  new QTableWidgetItem(x->get_patronymic()));
+            ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 4,
+                                  new QTableWidgetItem(x->get_salary()));
+            ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 5,
+                                  new QTableWidgetItem(x->get_birth_day().toString()));
+
+            if (auto a = dynamic_cast<teacher*>(x)) {
+                ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 7,
+                                      new QTableWidgetItem(a->get_education()));
+                ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 8,
+                                      new QTableWidgetItem(a->get_subject()));
+            }
+
+            if (auto a = dynamic_cast<director*>(x)) {
+                ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 9,
+                                      new QTableWidgetItem(a->get_phone()));
+            }
+
+            if (auto a = dynamic_cast<security*>(x)) {
+                ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 6,
+                                      new QTableWidgetItem(a->get_sec_organization()));
+            }
+        }
+    }
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -174,10 +223,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_emplTable_cellClicked(int row, int column)
 {
-    emplCell = { column, row };
-    ui->emplRemove->setEnabled(true);
-    ui->emplRedo->setEnabled(true);
-    ui->emplSearch->setEnabled(true);
+    if (!searchMode) {
+        emplCell = { column, row };
+        ui->emplRemove->setEnabled(true);
+        ui->emplRedo->setEnabled(true);
+        ui->emplSearch->setEnabled(true);
+    }
 }
 
 
@@ -495,18 +546,47 @@ void MainWindow::on_emplApply_clicked()
     ui->emplSearch->setEnabled(true);
 }
 
+void MainWindow::on_emplSearch_clicked()
+{
+    searchMode = true;
+    disable_all_office_buttons();
+    disable_all_empl_buttons();
+
+    for (int i = 0; i < allFields.count(); ++i) {
+        allFields[i]->setEnabled(false);
+    }
+
+    ui->emplName->setEnabled(true);
+    ui->emplSurname->setEnabled(true);
+    ui->emplPatron->setEnabled(true);
+    ui->emplSalary->setEnabled(true);
+    ui->emplPostBox->setEnabled(false);
+
+    ui->emplSearch->setEnabled(true);
+    ui->emplSearchReset->setEnabled(true);
+
+    ui->orgTable->setEnabled(false);
+
+    QString name = ui->emplName->text();
+    QString surname = ui->emplSurname->text();
+    QString patr = ui->emplPatron->text();
+    int salary = ui->emplSalary->value();
+
+    update_empl_table_after_search(name, surname, patr, salary);
+}
 
 
+void MainWindow::on_emplSearchReset_clicked()
+{
+    searchMode = false;
+    activate_fields(ui->emplPostBox->currentText());
+    ui->emplPostBox->setEnabled(true);
 
+    ui->orgAdd->setEnabled(true);
+    disable_all_empl_buttons();
+    ui->emplAdd->setEnabled(true);
+    ui->orgTable->setEnabled(true);
 
-
-
-
-
-
-
-
-
-
-
+    update_empl_table();
+}
 

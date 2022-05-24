@@ -29,6 +29,8 @@ class MainWindow : public QMainWindow
     QVector<QWidget*> directorFields;
     QVector<QWidget*> securityFields;
 
+    bool searchMode = false;
+
     office* curOffice;
 
     void activate_fields(QString post);
@@ -37,6 +39,8 @@ class MainWindow : public QMainWindow
     void disable_all_empl_buttons();
     void disable_all_office_buttons();
     bool is_valid_office_input();
+
+    void update_empl_table_after_search(QString name, QString surname, QString patr, int salaty);
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -64,6 +68,10 @@ private slots:
     void on_emplRedo_clicked();
 
     void on_emplApply_clicked();
+
+    void on_emplSearch_clicked();
+
+    void on_emplSearchReset_clicked();
 
 private:
     Ui::MainWindow *ui;
