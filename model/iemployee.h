@@ -49,10 +49,19 @@ public:
 
 inline void iemployee::serialize_to(QDataStream &stream)
 {
-
+    stream << post;
+    stream << name;
+    stream << surname;
+    stream << patronymic;
+    stream << birth_day;
+    stream << salary;
 }
 
 inline void iemployee::deserialize_from(QDataStream &stream)
 {
-
+    stream >> name;
+    stream >> surname;
+    stream >> patronymic;
+    stream >> birth_day;
+    stream >> salary;
 }

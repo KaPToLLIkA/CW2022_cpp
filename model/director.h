@@ -7,7 +7,9 @@ class director : public iemployee
 {
     QString phone;
 public:
-    explicit director();
+    explicit director() {
+        post = "director";
+    }
 
     explicit director(QString name,
              QString surname,
@@ -27,11 +29,13 @@ public:
     void set_phone(QString value) { phone = value; }
 
     void deserialize_from(QDataStream &stream) override {
-
+        iemployee::deserialize_from(stream);
+        stream >> phone;
     }
 
     void serialize_to(QDataStream &stream) override {
-
+        iemployee::serialize_to(stream);
+        stream << phone;
     }
 
     friend bool operator==(const director& l, const director& r);

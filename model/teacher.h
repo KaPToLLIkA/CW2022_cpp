@@ -8,7 +8,9 @@ class teacher : public iemployee
     QString education;
     QString subject;
 public:
-    explicit teacher() {}
+    explicit teacher() {
+        post = "teacher";
+    }
 
     explicit teacher(QString name,
             QString surname,
@@ -32,11 +34,15 @@ public:
     void set_education(QString value) { education = value; }
 
     void deserialize_from(QDataStream &stream) override {
-
+        iemployee::deserialize_from(stream);
+        stream >> subject;
+        stream >> education;
     }
 
     void serialize_to(QDataStream &stream) override {
-
+        iemployee::serialize_to(stream);
+        stream << subject;
+        stream << education;
     }
 
     friend bool operator==(const teacher& l, const teacher& r);

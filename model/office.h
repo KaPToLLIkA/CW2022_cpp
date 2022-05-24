@@ -4,6 +4,9 @@
 #include <QString>
 #include "../slow_list.h"
 #include "iemployee.h"
+#include "teacher.h"
+#include "director.h"
+#include "security.h"
 
 class office
 {
@@ -45,11 +48,44 @@ public:
     void set_phone(QString value) { phone = value; }
 
     virtual void serialize_to(QDataStream &stream) {
-
+        stream << name;
+        stream << address;
+        stream << phone;
+        stream << employees.lenght();
+        for (int i = 0; i < employees.lenght(); ++i) {
+            employees.get_value_at(i)->serialize_to(stream);
+        }
     }
 
     virtual void deserialize_from(QDataStream &stream) {
+        stream >> name;
+        stream >> address;
+        stream >> phone;
+        int count = 0;
+        stream >> count;
+        for (int i = 0; i < count; ++i) {
+            QString post;
+            stream >> post;
 
+            if (post == "teacher") {
+                auto x = new teacher();
+                x->deserialize_from(stream);
+                employees.add(x);
+            }
+
+            if (post == "security") {
+                auto x = new security();
+                x->deserialize_from(stream);
+                employees.add(x);
+            }
+
+            if (post == "director") {
+                auto x = new director();
+                x->deserialize_from(stream);
+                employees.add(x);
+            }
+
+        }
     }
 
     friend bool operator==(const office& l, const office& r);
