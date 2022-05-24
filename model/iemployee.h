@@ -12,6 +12,7 @@ protected:
     QString surname;
     QString patronymic;
     QDate birth_day;
+    QString post;
     int salary;
 public:
     explicit iemployee() {}
@@ -33,6 +34,7 @@ public:
     QString get_patronymic() { return patronymic; }
     QDate get_birth_day() { return birth_day; }
     int get_salary() { return salary; }
+    QString get_post() { return post; }
 
     void set_name(QString value) { name = value; }
     void set_surname(QString value) { surname = value; }

@@ -8,7 +8,7 @@ class teacher : public iemployee
     QString education;
     QString subject;
 public:
-    explicit teacher() {}
+    explicit teacher();
 
     explicit teacher(QString name,
             QString surname,
@@ -21,7 +21,9 @@ public:
           iemployee(name, surname, patronymic, birth_day, salary),
           education(education),
           subject(subject)
-    {}
+    {
+       post = "teacher";
+   }
 
     QString get_subject() { return subject; }
     QString get_education() { return education; }

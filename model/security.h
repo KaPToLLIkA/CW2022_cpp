@@ -7,7 +7,7 @@ class security : public iemployee
 {
     QString security_organization;
 public:
-    explicit security() {}
+    explicit security();
 
     explicit security(QString name,
              QString surname,
@@ -18,7 +18,9 @@ public:
          :
            iemployee(name, surname, patronymic, birth_day, salary),
            security_organization(security_organization)
-     {}
+     {
+        post = "security";
+    }
 
     QString get_sec_organization() { return security_organization; }
 

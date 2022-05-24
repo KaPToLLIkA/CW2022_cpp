@@ -7,7 +7,7 @@ class director : public iemployee
 {
     QString phone;
 public:
-    explicit director() {}
+    explicit director();
 
     explicit director(QString name,
              QString surname,
@@ -18,7 +18,9 @@ public:
          :
            iemployee(name, surname, patronymic, birth_day, salary),
            phone(phone)
-     {}
+    {
+       post = "director";
+   }
 
     QString get_phone() { return phone; }
 
