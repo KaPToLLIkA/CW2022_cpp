@@ -53,7 +53,45 @@ void MainWindow::update_offices_table()
 
 void MainWindow::update_empl_table()
 {
+    while(ui->emplTable->rowCount() > 0) {
+        ui->emplTable->removeRow(0);
+    }
 
+    for (int i = 0; i < curOffice->employees_count(); ++i) {
+        iemployee* x = curOffice->get_employee_at(i);
+
+        ui->emplTable->insertRow(ui->emplTable->rowCount());
+
+        ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 0,
+                              new QTableWidgetItem(x->get_post()));
+        ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 1,
+                              new QTableWidgetItem(x->get_name()));
+        ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 2,
+                              new QTableWidgetItem(x->get_surname()));
+        ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 3,
+                              new QTableWidgetItem(x->get_patronymic()));
+        ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 4,
+                              new QTableWidgetItem(x->get_salary()));
+        ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 5,
+                              new QTableWidgetItem(x->get_birth_day().toString()));
+
+        if (auto a = dynamic_cast<teacher*>(x)) {
+            ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 7,
+                                  new QTableWidgetItem(a->get_education()));
+            ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 8,
+                                  new QTableWidgetItem(a->get_subject()));
+        }
+
+        if (auto a = dynamic_cast<director*>(x)) {
+            ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 9,
+                                  new QTableWidgetItem(a->get_phone()));
+        }
+
+        if (auto a = dynamic_cast<security*>(x)) {
+            ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 6,
+                                  new QTableWidgetItem(a->get_sec_organization()));
+        }
+    }
 }
 
 void MainWindow::disable_all_empl_buttons()
@@ -72,6 +110,11 @@ void MainWindow::disable_all_office_buttons()
     ui->orgRedo->setEnabled(false);
     ui->orgApply->setEnabled(false);
     ui->orgAdd->setEnabled(false);
+}
+
+bool MainWindow::is_valid_office_input()
+{
+    return true;
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -132,6 +175,9 @@ MainWindow::~MainWindow()
 void MainWindow::on_emplTable_cellClicked(int row, int column)
 {
     emplCell = { column, row };
+    ui->emplRemove->setEnabled(true);
+    ui->emplRedo->setEnabled(true);
+    ui->emplSearch->setEnabled(true);
 }
 
 
@@ -141,6 +187,8 @@ void MainWindow::on_orgTable_cellClicked(int row, int column)
     curOffice = data_base::i()->get_office_at(row);
     ui->orgRedo->setEnabled(true);
     ui->orgRemove->setEnabled(true);
+    ui->emplAdd->setEnabled(true);
+    disable_all_empl_buttons();
     ui->emplAdd->setEnabled(true);
     update_empl_table();
 }
@@ -174,12 +222,14 @@ void MainWindow::on_orgRemove_clicked()
             && orgCell.y() < data_base::i()->offices_count()) {
         curOffice = data_base::i()->get_office_at(orgCell.y());
         data_base::i()->remove_office(curOffice);
+        disable_all_empl_buttons();
         update_offices_table();
     }
 
     if (data_base::i()->offices_count() == 0) {
         disable_all_office_buttons();
         disable_all_empl_buttons();
+        ui->orgAdd->setEnabled(true);
     }
 }
 
@@ -222,4 +272,241 @@ void MainWindow::on_orgApply_clicked()
 
     update_offices_table();
 }
+
+
+void MainWindow::on_emplAdd_clicked()
+{
+    if (orgCell.y() >= 0 && orgCell.y() < data_base::i()->offices_count()) {
+        QString post = ui->emplPostBox->currentText();
+
+        curOffice = data_base::i()->get_office_at(orgCell.y());
+
+        QString name = ui->emplName->text();
+        QString surname = ui->emplSurname->text();
+        QString patr = ui->emplPatron->text();
+        QDate birhtDay = ui->emplBirthDay->date();
+        int salary = ui->emplSalary->value();
+
+        if (name.isEmpty() || surname.isEmpty() || patr.isEmpty()
+                || birhtDay > QDate::currentDate()) {
+            QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+            return;
+        }
+
+        if (post == "Учитель") {
+            QString subject = ui->emplSubject->text();
+            QString education = ui->emplEducation->text();
+
+            if (subject.isEmpty() || education.isEmpty()) {
+                QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+                return;
+            }
+
+            curOffice->add_employee(
+                        new teacher(name,
+                                    surname, patr,
+                                    birhtDay, salary,
+                                    education, subject));
+            update_empl_table();
+            ui->emplSearch->setEnabled(true);
+        }
+
+        if (post == "Директор") {
+            QString phone = ui->emplPhone->text();
+
+            if (phone.isEmpty()) {
+                QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+                return;
+            }
+
+            curOffice->add_employee(
+                        new director(name,
+                                    surname, patr,
+                                    birhtDay, salary,
+                                    phone));
+
+            update_empl_table();
+            ui->emplSearch->setEnabled(true);
+        }
+
+        if (post == "Охранник") {
+            QString org = ui->emplOrganization->text();
+
+            if (org.isEmpty()) {
+                QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+                return;
+            }
+
+            curOffice->add_employee(
+                        new security(name,
+                                    surname, patr,
+                                    birhtDay, salary,
+                                    org));
+
+            update_empl_table();
+            ui->emplSearch->setEnabled(true);
+        }
+    }
+}
+
+
+void MainWindow::on_emplRemove_clicked()
+{
+    if (orgCell.y() >= 0
+            && orgCell.y() < data_base::i()->offices_count()
+            && emplCell.y() >= 0
+            && emplCell.y() < data_base::i()->get_office_at(orgCell.y())->employees_count()) {
+
+        auto x = data_base::i()->get_office_at(orgCell.y())->get_employee_at(emplCell.y());
+        data_base::i()->get_office_at(orgCell.y())->remove_employee(x);
+
+        update_empl_table();
+    }
+}
+
+
+
+
+void MainWindow::on_emplRedo_clicked()
+{
+    if (orgCell.y() >= 0
+            && orgCell.y() < data_base::i()->offices_count()
+            && emplCell.y() >= 0
+            && emplCell.y() < data_base::i()->get_office_at(orgCell.y())->employees_count()) {
+
+        disable_all_empl_buttons();
+        ui->emplApply->setEnabled(true);
+        ui->emplTable->setEnabled(false);
+
+        auto x = data_base::i()->get_office_at(orgCell.y())->get_employee_at(emplCell.y());
+
+        ui->emplName->setText(x->get_name());
+        ui->emplSurname->setText(x->get_surname());
+        ui->emplBirthDay->setDate(x->get_birth_day());
+        ui->emplPatron->setText(x->get_patronymic());
+        ui->emplSalary->setValue(x->get_salary());
+
+        if (x->get_post() == "teacher") {
+            activate_fields("Учитель");
+
+            auto p = dynamic_cast<teacher*>(x);
+
+            ui->emplEducation->setText(p->get_education());
+            ui->emplSubject->setText(p->get_subject());
+        }
+
+        if (x->get_post() == "director") {
+            activate_fields("Директор");
+
+            auto p = dynamic_cast<director*>(x);
+
+            ui->emplPhone->setText(p->get_phone());
+        }
+
+        if (x->get_post() == "security") {
+            activate_fields("Охранник");
+
+            auto p = dynamic_cast<security*>(x);
+
+            ui->emplOrganization->setText(p->get_sec_organization());
+        }
+    }
+}
+
+
+void MainWindow::on_emplApply_clicked()
+{
+    auto x = data_base::i()->get_office_at(orgCell.y())->get_employee_at(emplCell.y());
+
+    QString name = ui->emplName->text();
+    QString surname = ui->emplSurname->text();
+    QString patr = ui->emplPatron->text();
+    QDate birhtDay = ui->emplBirthDay->date();
+    int salary = ui->emplSalary->value();
+
+    if (name.isEmpty() || surname.isEmpty() || patr.isEmpty()
+            || birhtDay > QDate::currentDate()) {
+        QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+        return;
+    }
+
+    if (x->get_post() == "teacher") {
+        QString subject = ui->emplSubject->text();
+        QString education = ui->emplEducation->text();
+
+        if (subject.isEmpty() || education.isEmpty()) {
+            QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+            return;
+        }
+
+        auto p = dynamic_cast<teacher*>(x);
+
+        p->set_name(name);
+        p->set_surname(surname);
+        p->set_patronymic(patr);
+        p->set_birth_day(birhtDay);
+        p->set_salary(salary);
+        p->set_education(education);
+        p->set_subject(subject);
+
+    }
+
+    if (x->get_post() == "director") {
+        QString phone = ui->emplPhone->text();
+
+        if (phone.isEmpty()) {
+            QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+            return;
+        }
+
+        auto p = dynamic_cast<director*>(x);
+
+        p->set_name(name);
+        p->set_surname(surname);
+        p->set_patronymic(patr);
+        p->set_birth_day(birhtDay);
+        p->set_salary(salary);
+        p->set_phone(phone);
+
+    }
+
+    if (x->get_post() == "security") {
+        QString org = ui->emplOrganization->text();
+
+        if (org.isEmpty()) {
+            QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+            return;
+        }
+
+        auto p = dynamic_cast<security*>(x);
+
+        p->set_name(name);
+        p->set_surname(surname);
+        p->set_patronymic(patr);
+        p->set_birth_day(birhtDay);
+        p->set_salary(salary);
+        p->set_sec_organization(org);
+    }
+
+    update_empl_table();
+    disable_all_empl_buttons();
+    ui->emplTable->setEnabled(true);
+    ui->emplAdd->setEnabled(true);
+    ui->emplSearch->setEnabled(true);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

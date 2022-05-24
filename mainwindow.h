@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QDebug>
+#include <QMessageBox>
 #include <array>
 #include <qvector.h>
 
@@ -35,6 +36,7 @@ class MainWindow : public QMainWindow
     void update_empl_table();
     void disable_all_empl_buttons();
     void disable_all_office_buttons();
+    bool is_valid_office_input();
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -54,6 +56,14 @@ private slots:
     void on_orgRedo_clicked();
 
     void on_orgApply_clicked();
+
+    void on_emplAdd_clicked();
+
+    void on_emplRemove_clicked();
+
+    void on_emplRedo_clicked();
+
+    void on_emplApply_clicked();
 
 private:
     Ui::MainWindow *ui;

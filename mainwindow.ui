@@ -46,7 +46,11 @@
       <item>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="1" column="2">
-         <widget class="QLineEdit" name="orgAddress"/>
+         <widget class="QLineEdit" name="orgAddress">
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
         </item>
         <item row="3" column="1">
          <widget class="QPushButton" name="orgRemove">
@@ -70,7 +74,11 @@
          </widget>
         </item>
         <item row="0" column="2">
-         <widget class="QLineEdit" name="orgName"/>
+         <widget class="QLineEdit" name="orgName">
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
         </item>
         <item row="4" column="0">
          <widget class="QPushButton" name="orgApply">
@@ -80,7 +88,11 @@
          </widget>
         </item>
         <item row="2" column="2">
-         <widget class="QLineEdit" name="orgPhone"/>
+         <widget class="QLineEdit" name="orgPhone">
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
         </item>
         <item row="0" column="1">
          <widget class="QLabel" name="label_13">
@@ -166,6 +178,11 @@
         </column>
         <column>
          <property name="text">
+          <string>Предмет</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
           <string>Номер телефона</string>
          </property>
         </column>
@@ -181,7 +198,11 @@
       <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="10" column="2">
-         <widget class="QLineEdit" name="emplSubject"/>
+         <widget class="QLineEdit" name="emplSubject">
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
         </item>
         <item row="2" column="1">
          <widget class="QLabel" name="label_6">
@@ -191,7 +212,11 @@
          </widget>
         </item>
         <item row="3" column="2">
-         <widget class="QLineEdit" name="emplName"/>
+         <widget class="QLineEdit" name="emplName">
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
         </item>
         <item row="7" column="1">
          <widget class="QLabel" name="label_8">
@@ -225,7 +250,11 @@
          </widget>
         </item>
         <item row="5" column="2">
-         <widget class="QLineEdit" name="emplPatron"/>
+         <widget class="QLineEdit" name="emplPatron">
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
         </item>
         <item row="6" column="1">
          <widget class="QLabel" name="label_7">
@@ -242,7 +271,11 @@
          </widget>
         </item>
         <item row="4" column="2">
-         <widget class="QLineEdit" name="emplSurname"/>
+         <widget class="QLineEdit" name="emplSurname">
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
         </item>
         <item row="5" column="1">
          <widget class="QLabel" name="label_4">
@@ -266,7 +299,11 @@
          </widget>
         </item>
         <item row="11" column="2">
-         <widget class="QLineEdit" name="emplPhone"/>
+         <widget class="QLineEdit" name="emplPhone">
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
         </item>
         <item row="10" column="1">
          <widget class="QLabel" name="label_11">
@@ -288,18 +325,12 @@
           </property>
          </spacer>
         </item>
-        <item row="6" column="2">
-         <widget class="QDoubleSpinBox" name="emplSalary">
-          <property name="maximum">
-           <double>10000000.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>1000.000000000000000</double>
+        <item row="8" column="2">
+         <widget class="QLineEdit" name="emplOrganization">
+          <property name="text">
+           <string>a</string>
           </property>
          </widget>
-        </item>
-        <item row="8" column="2">
-         <widget class="QLineEdit" name="emplOrganization"/>
         </item>
         <item row="12" column="1">
          <widget class="QPushButton" name="emplSearch">
@@ -328,7 +359,11 @@
          </widget>
         </item>
         <item row="9" column="2">
-         <widget class="QLineEdit" name="emplEducation"/>
+         <widget class="QLineEdit" name="emplEducation">
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
         </item>
         <item row="9" column="1">
          <widget class="QLabel" name="label_10">
@@ -355,6 +390,16 @@
          <widget class="QPushButton" name="emplSearchReset">
           <property name="text">
            <string>Сбросить</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="QSpinBox" name="emplSalary">
+          <property name="maximum">
+           <number>10000000</number>
+          </property>
+          <property name="singleStep">
+           <number>1000</number>
           </property>
          </widget>
         </item>
