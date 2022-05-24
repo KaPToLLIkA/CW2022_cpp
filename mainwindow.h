@@ -13,6 +13,8 @@
 #include "model/director.h"
 #include "model/security.h"
 #include "model/data_base.h"
+#include "about_dialog.h"
+#include "help_dialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,6 +35,8 @@ class MainWindow : public QMainWindow
     QString path;
     bool fileWasOpened = false;
 
+    about_dialog *about_dlg = nullptr;
+    help_dialog *help_dlg = nullptr;
 
     bool searchMode = false;
 
@@ -87,6 +91,8 @@ private slots:
     void on_action_about_triggered();
 
     void on_action_help_triggered();
+
+    void on_action_create_triggered();
 
 private:
     Ui::MainWindow *ui;
