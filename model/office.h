@@ -2,6 +2,7 @@
 #define OFFICE_H
 
 #include <QString>
+#include <QDebug>
 #include "../slow_list.h"
 #include "iemployee.h"
 #include "teacher.h"
@@ -59,13 +60,18 @@ public:
 
     virtual void deserialize_from(QDataStream &stream) {
         stream >> name;
+        qDebug() << name;
         stream >> address;
+        qDebug() << address;
         stream >> phone;
-        int count = 0;
+        qDebug() << phone;
+        uint32_t count = 0;
         stream >> count;
         for (int i = 0; i < count; ++i) {
             QString post;
             stream >> post;
+
+            qDebug() << post;
 
             if (post == "teacher") {
                 auto x = new teacher();

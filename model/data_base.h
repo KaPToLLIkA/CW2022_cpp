@@ -1,6 +1,9 @@
 #ifndef DATA_BASE_H
 #define DATA_BASE_H
 
+#include <QFile>
+#include <QDebug>
+
 #include "../slow_list.h"
 #include "office.h"
 
@@ -36,11 +39,36 @@ public:
     }
 
     void load_from_file(QString path) {
+        qDebug() << path;
 
+        offices = slow_list<office>();
+
+        QFile inFile(path);
+        inFile.open(QIODevice::ReadOnly);
+        QDataStream inStream(&inFile);
+
+        uint32_t size;
+        inStream >> size;
+
+        qDebug() << "s" << size;
+
+        for(uint32_t i = 0; i < size; ++i) {
+            auto x = new office();
+            qDebug() << "i" << i;
+            x->deserialize_from(inStream);
+            offices.add(x);
+        }
     }
 
     void unload_to_file(QString path) {
+        QFile outFile(path);
+        outFile.open(QIODevice::WriteOnly);
+        QDataStream outStream(&outFile);
 
+        outStream << offices.lenght();
+        for(uint64_t i = 0; i < offices.lenght(); ++i) {
+            offices.get_value_at(i)->serialize_to(outStream);
+        }
     }
 };
 

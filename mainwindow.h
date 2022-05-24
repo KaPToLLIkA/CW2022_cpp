@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QMessageBox>
+#include <QFileDialog>
 #include <array>
 #include <qvector.h>
 
@@ -28,6 +29,10 @@ class MainWindow : public QMainWindow
     QVector<QWidget*> teacherFields;
     QVector<QWidget*> directorFields;
     QVector<QWidget*> securityFields;
+
+    QString path;
+    bool fileWasOpened = false;
+
 
     bool searchMode = false;
 
@@ -72,6 +77,16 @@ private slots:
     void on_emplSearch_clicked();
 
     void on_emplSearchReset_clicked();
+
+    void on_action_save_triggered();
+
+    void on_action_save_as_triggered();
+
+    void on_action_open_triggered();
+
+    void on_action_about_triggered();
+
+    void on_action_help_triggered();
 
 private:
     Ui::MainWindow *ui;

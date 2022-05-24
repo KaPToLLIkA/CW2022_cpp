@@ -422,43 +422,52 @@
     <property name="title">
      <string>Файл</string>
     </property>
-    <addaction name="action"/>
-    <addaction name="action_3"/>
+    <addaction name="action_save"/>
+    <addaction name="action_save_as"/>
     <addaction name="separator"/>
-    <addaction name="action_4"/>
+    <addaction name="action_open"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
      <string>Справка</string>
     </property>
-    <addaction name="action_2"/>
-    <addaction name="action_5"/>
+    <addaction name="action_about"/>
+    <addaction name="action_help"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="action">
+  <action name="action_save">
    <property name="text">
     <string>Сохранить</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
-  <action name="action_3">
+  <action name="action_save_as">
    <property name="text">
     <string>Сохранить как...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
   </action>
-  <action name="action_4">
+  <action name="action_open">
    <property name="text">
     <string>Открыть</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
-  <action name="action_2">
+  <action name="action_about">
    <property name="text">
     <string>О программе</string>
    </property>
   </action>
-  <action name="action_5">
+  <action name="action_help">
    <property name="text">
     <string>Помощь</string>
    </property>

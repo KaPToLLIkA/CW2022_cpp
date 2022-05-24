@@ -70,8 +70,10 @@ void MainWindow::update_empl_table()
                               new QTableWidgetItem(x->get_surname()));
         ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 3,
                               new QTableWidgetItem(x->get_patronymic()));
+        QString salary = "";
+        salary.setNum(x->get_salary());
         ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 4,
-                              new QTableWidgetItem(x->get_salary()));
+                              new QTableWidgetItem(salary));
         ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 5,
                               new QTableWidgetItem(x->get_birth_day().toString()));
 
@@ -141,8 +143,10 @@ void MainWindow::update_empl_table_after_search(QString name, QString surname, Q
                                   new QTableWidgetItem(x->get_surname()));
             ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 3,
                                   new QTableWidgetItem(x->get_patronymic()));
+            QString salary = "";
+            salary.setNum(x->get_salary());
             ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 4,
-                                  new QTableWidgetItem(x->get_salary()));
+                                  new QTableWidgetItem(salary));
             ui->emplTable->setItem(ui->emplTable->rowCount() - 1, 5,
                                   new QTableWidgetItem(x->get_birth_day().toString()));
 
@@ -588,5 +592,56 @@ void MainWindow::on_emplSearchReset_clicked()
     ui->orgTable->setEnabled(true);
 
     update_empl_table();
+}
+
+
+void MainWindow::on_action_save_triggered()
+{
+    if (path.isEmpty()) {
+        on_action_save_as_triggered();
+    } else {
+        data_base::i()->unload_to_file(path);
+    }
+}
+
+
+void MainWindow::on_action_save_as_triggered()
+{
+    path = QFileDialog::getSaveFileName(this, "Save as...", "", "*.txt");
+    if(path.isEmpty()) return;
+
+    data_base::i()->unload_to_file(path);
+    fileWasOpened = true;
+}
+
+
+
+void MainWindow::on_action_open_triggered()
+{
+    path = QFileDialog::getOpenFileName(this, "Open...", "", "*.txt");
+    if(path.isEmpty()) return;
+
+    data_base::i()->load_from_file(path);
+    fileWasOpened = true;
+
+    update_offices_table();
+
+    disable_all_empl_buttons();
+    disable_all_office_buttons();
+
+    ui->emplAdd->setEnabled(true);
+    ui->orgAdd->setEnabled(true);
+}
+
+
+void MainWindow::on_action_about_triggered()
+{
+
+}
+
+
+void MainWindow::on_action_help_triggered()
+{
+
 }
 
