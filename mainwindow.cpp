@@ -660,12 +660,64 @@ void MainWindow::on_action_open_triggered()
 
 void MainWindow::on_action_about_triggered()
 {
+    if (about_dlg != nullptr) {
+        delete about_dlg;
+        about_dlg = nullptr;
+    }
 
+    about_dlg = new about_dialog(this);
+    about_dlg->show();
 }
 
 
 void MainWindow::on_action_help_triggered()
 {
+    if (help_dlg != nullptr) {
+        delete help_dlg;
+        help_dlg = nullptr;
+    }
 
+    help_dlg = new help_dialog(this);
+    help_dlg->show();
+}
+
+
+void MainWindow::on_action_create_triggered()
+{
+    if (fileWasOpened) {
+        switch(QMessageBox(QMessageBox::Question,
+                                   "Сохранить?",
+                                   "Сохранить файл перед созданием нового?",
+                                   QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+                                   this).exec()) {
+        case QMessageBox::Yes: {
+            data_base::i()->unload_to_file(path);
+        } break;
+        case QMessageBox::No: {
+
+        } break;
+        case QMessageBox::Cancel: {
+            return;
+        }
+        }
+    }
+
+    data_base::i()->clear();
+
+    while(ui->emplTable->rowCount() > 0) {
+        ui->emplTable->removeRow(0);
+    }
+
+    while(ui->orgTable->rowCount() > 0) {
+        ui->orgTable->removeRow(0);
+    }
+
+    path = "";
+    fileWasOpened = false;
+
+    disable_all_empl_buttons();
+    disable_all_office_buttons();
+
+    ui->orgAdd->setEnabled(true);
 }
 

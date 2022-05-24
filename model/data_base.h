@@ -22,6 +22,10 @@ public:
         return _i;
     }
 
+    void clear() {
+        offices = slow_list<office>();
+    }
+
     void add_office(office* office) {
         offices.add(office);
     }
