@@ -179,7 +179,7 @@ MainWindow::MainWindow(QWidget *parent)
     disable_all_office_buttons();
     disable_all_empl_buttons();
 
-     ui->orgAdd->setEnabled(true);
+    ui->orgAdd->setEnabled(true);
 
     ui->orgTable->setEditTriggers(nullptr);
     ui->emplTable->setEditTriggers(nullptr);
@@ -217,6 +217,22 @@ MainWindow::MainWindow(QWidget *parent)
     securityFields.append(ui->emplOrganization);
 
     activate_fields(ui->emplPostBox->currentText());
+
+    QString textValidator = "^[a-zA-Zа-яА-Я0-9.,\'\"\\-][a-zA-Zа-яА-Я0-9.,\\s\'\"\\-]*";
+    QString wordValidator = "^[a-zA-Zа-яА-Я]+(\\s[a-zA-Zа-яА-Я]+)*";
+    QString phoneValidator = "^\\+?[1-9][0-9]{0,12}";
+
+    ui->emplName->setValidator(new QRegExpValidator(QRegExp(wordValidator), this));
+    ui->emplSurname->setValidator(new QRegExpValidator(QRegExp(wordValidator), this));
+    ui->emplPatron->setValidator(new QRegExpValidator(QRegExp(wordValidator), this));
+    ui->emplPhone->setValidator(new QRegExpValidator(QRegExp(phoneValidator), this));
+    ui->emplEducation->setValidator(new QRegExpValidator(QRegExp(textValidator), this));
+    ui->emplOrganization->setValidator(new QRegExpValidator(QRegExp(textValidator), this));
+    ui->emplSubject->setValidator(new QRegExpValidator(QRegExp(textValidator), this));
+
+    ui->orgAddress->setValidator(new QRegExpValidator(QRegExp(textValidator), this));
+    ui->orgName->setValidator(new QRegExpValidator(QRegExp(textValidator), this));
+    ui->orgPhone->setValidator(new QRegExpValidator(QRegExp(phoneValidator), this));
 }
 
 MainWindow::~MainWindow()
@@ -260,6 +276,11 @@ void MainWindow::on_orgAdd_clicked()
     QString name = ui->orgName->text();
     QString address = ui->orgAddress->text();
     QString phone = ui->orgPhone->text();
+
+    if (name.isEmpty() || address.isEmpty() || phone.isEmpty()) {
+        QMessageBox::warning(this, "Внимание!", "Вы заполнили не все поля!");
+        return;
+    }
 
     office* o = new office(name, address, phone);
 
@@ -310,11 +331,14 @@ void MainWindow::on_orgRedo_clicked()
 
 void MainWindow::on_orgApply_clicked()
 {
-    // check
-
     QString name = ui->orgName->text();
     QString address = ui->orgAddress->text();
     QString phone = ui->orgPhone->text();
+
+    if (name.isEmpty() || address.isEmpty() || phone.isEmpty()) {
+        QMessageBox::warning(this, "Внимание!", "Вы заполнили не все поля!");
+        return;
+    }
 
     curOffice->set_name(name);
     curOffice->set_address(address);
@@ -343,8 +367,8 @@ void MainWindow::on_emplAdd_clicked()
         int salary = ui->emplSalary->value();
 
         if (name.isEmpty() || surname.isEmpty() || patr.isEmpty()
-                || birhtDay > QDate::currentDate()) {
-            QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+                || birhtDay > QDate::currentDate() || salary <= 0) {
+            QMessageBox::warning(this, "Внимание!", "Вы заполнили не все поля!");
             return;
         }
 
@@ -353,7 +377,7 @@ void MainWindow::on_emplAdd_clicked()
             QString education = ui->emplEducation->text();
 
             if (subject.isEmpty() || education.isEmpty()) {
-                QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+                QMessageBox::warning(this, "Внимание!", "Вы заполнили не все поля!");
                 return;
             }
 
@@ -370,7 +394,7 @@ void MainWindow::on_emplAdd_clicked()
             QString phone = ui->emplPhone->text();
 
             if (phone.isEmpty()) {
-                QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+                QMessageBox::warning(this, "Внимание!", "Вы заполнили не все поля!");
                 return;
             }
 
@@ -388,7 +412,7 @@ void MainWindow::on_emplAdd_clicked()
             QString org = ui->emplOrganization->text();
 
             if (org.isEmpty()) {
-                QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+                QMessageBox::warning(this, "Внимание!", "Вы заполнили не все поля!");
                 return;
             }
 
@@ -481,7 +505,7 @@ void MainWindow::on_emplApply_clicked()
 
     if (name.isEmpty() || surname.isEmpty() || patr.isEmpty()
             || birhtDay > QDate::currentDate()) {
-        QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+        QMessageBox::warning(this, "Внимание!", "Вы заполнили не все поля!");
         return;
     }
 
@@ -490,7 +514,7 @@ void MainWindow::on_emplApply_clicked()
         QString education = ui->emplEducation->text();
 
         if (subject.isEmpty() || education.isEmpty()) {
-            QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+            QMessageBox::warning(this, "Внимание!", "Вы заполнили не все поля!");
             return;
         }
 
@@ -510,7 +534,7 @@ void MainWindow::on_emplApply_clicked()
         QString phone = ui->emplPhone->text();
 
         if (phone.isEmpty()) {
-            QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+            QMessageBox::warning(this, "Внимание!", "Вы заполнили не все поля!");
             return;
         }
 
@@ -529,7 +553,7 @@ void MainWindow::on_emplApply_clicked()
         QString org = ui->emplOrganization->text();
 
         if (org.isEmpty()) {
-            QMessageBox::warning(this, "Внимание!", "Введены некорректные данные");
+            QMessageBox::warning(this, "Внимание!", "Вы заполнили не все поля!");
             return;
         }
 
